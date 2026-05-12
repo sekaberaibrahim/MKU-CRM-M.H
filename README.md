@@ -1,6 +1,6 @@
 # The Manor Hotel CRM (Free Stack)
 
-This is a zero-license-cost starter for your final-year CRM project:
+
 
 - Frontend: React + TypeScript + Vite
 - Backend: Node.js + Express + TypeScript
