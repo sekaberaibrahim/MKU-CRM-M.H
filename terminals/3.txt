@@ -1,0 +1,122 @@
+---
+pid: 53824
+cwd: |
+  C:\Users\isekabera
+active_command: git add .
+last_command: git init
+last_exit_code: 0
+---
+PS C:\Users\isekabera> git init
+Initialized empty Git repository in C:/Users/isekabera/.git/
+PS C:\Users\isekabera> git config --global user.name "Your Name"
+PS C:\Users\isekabera> git config --global user.email "sekaberaibrahim@gmail.com"
+PS C:\Users\isekabera> git config --global user.name "SEKABERA Ibrahim"
+PS C:\Users\isekabera> git config --global user.email "sekaberaibrahim@gmail.com"
+PS C:\Users\isekabera> git config --list
+diff.astextplain.textconv=astextplain
+filter.lfs.clean=git-lfs clean -- %f
+filter.lfs.smudge=git-lfs smudge -- %f
+filter.lfs.process=git-lfs filter-process
+filter.lfs.required=true
+http.sslbackend=schannel
+core.autocrlf=true
+core.fscache=true
+core.symlinks=false
+pull.rebase=false
+credential.helper=manager
+credential.https://dev.azure.com.usehttppath=true
+init.defaultbranch=master
+user.name=SEKABERA Ibrahim
+user.email=sekaberaibrahim@gmail.com
+core.repositoryformatversion=0
+core.filemode=false
+core.bare=false
+core.logallrefupdates=true
+core.symlinks=false
+core.ignorecase=true
+PS C:\Users\isekabera> git init
+Reinitialized existing Git repository in C:/Users/isekabera/.git/
+PS C:\Users\isekabera> git remote add origin https://github.com/sekaberaibrahim/MKU-CRM-M.H.git
+PS C:\Users\isekabera> git log -1 --oneline
+fatal: your current branch 'master' does not have any commits yet
+PS C:\Users\isekabera> git remote -v
+origin  https://github.com/sekaberaibrahim/MKU-CRM-M.H.git (fetch)
+origin  https://github.com/sekaberaibrahim/MKU-CRM-M.H.git (push)
+PS C:\Users\isekabera> git status
+warning: could not open directory 'Application Data/': Permission denied
+warning: could not open directory 'Cookies/': Permission denied
+warning: could not open directory 'Documents/My Music/': Permission denied
+warning: could not open directory 'Documents/My Pictures/': Permission denied
+warning: could not open directory 'Documents/My Videos/': Permission denied
+warning: could not open directory 'Local Settings/': Permission denied
+warning: could not open directory 'My Documents/': Permission denied
+warning: could not open directory 'NetHood/': Permission denied
+warning: could not open directory 'PrintHood/': Permission denied
+warning: could not open directory 'Recent/': Permission denied
+warning: could not open directory 'SendTo/': Permission denied
+warning: could not open directory 'Start Menu/': Permission denied
+warning: could not open directory 'Templates/': Permission denied
+On branch master
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        .antigravity/
+        .cache/
+        .cagent/
+        .config/
+        .copilot/
+        .cursor/
+        .docker/
+        .gemini/
+        .gitconfig
+        .lesshst
+        .local/
+        .matplotlib/
+        .vscode-shared/
+        .vscode/
+        AppData/
+        Contacts/
+        Downloads/
+        Favorites/
+        Links/
+        Music/
+        NTUSER.DAT
+        NTUSER.DAT{8b8f57c3-b4de-11f0-b696-f4289d88f07e}.TM.blf
+        NTUSER.DAT{8b8f57c3-b4de-11f0-b696-f4289d88f07e}.TMContainer00000000000000000001.regtrans-ms
+        NTUSER.DAT{8b8f57c3-b4de-11f0-b696-f4289d88f07e}.TMContainer00000000000000000002.regtrans-ms
+        ODBA/
+        OneDrive - Bank of Kigali/
+        OneDriveCloudTemp/
+        Saved Games/
+        Searches/
+        Videos/
+        desktop.ini
+        ntuser.dat.LOG1
+        ntuser.dat.LOG2
+        ntuser.ini
+
+nothing added to commit but untracked files present (use "git add" to track)
+PS C:\Users\isekabera> git stats -sb
+git: 'stats' is not a git command. See 'git --help'.
+
+The most similar command is
+        status
+PS C:\Users\isekabera> git init 
+Reinitialized existing Git repository in C:/Users/isekabera/.git/
+PS C:\Users\isekabera> git add .
+warning: could not open directory 'AppData/Local/Application Data/': Permission denied
+warning: could not open directory 'AppData/Local/History/': Permission denied
+warning: could not open directory 'AppData/Local/Microsoft/Windows/INetCache/Content.IE5/': Permission denied
+warning: could not open directory 'AppData/Local/Microsoft/Windows/INetCache/Low/Content.IE5/': Permission denied
+warning: could not open directory 'AppData/Local/Microsoft/Windows/Temporary Internet Files/': Permission denied
+warning: could not open directory 'AppData/Local/Temporary Internet Files/': Permission denied
+warning: could not open directory 'Application Data/': Permission denied
+warning: could not open directory 'Cookies/': Permission denied
+warning: could not open directory 'Documents/My Music/': Permission denied
+warning: could not open directory 'Documents/My Pictures/': Permission denied
+warning: could not open directory 'Documents/My Videos/': Permission denied
+warning: could not open directory 'Local Settings/': Permission denied
+warning: could not open directory 'My Documents/': Permission denied
+warning: could not open directory 'NetHood/': Permission denied

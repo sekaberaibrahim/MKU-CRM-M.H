@@ -1,0 +1,18 @@
+{
+  "name": "manor-hotel-crm",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Final year CRM Information System for The Manor Hotel",
+  "scripts": {
+    "install:all": "npm install --prefix backend && npm install --prefix frontend",
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "build": "npm run build --prefix backend && npm run build --prefix frontend",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "db:migrate": "npm run prisma:migrate --prefix backend -- --name init",
+    "db:seed:sql": "powershell -Command \"psql -h localhost -U postgres -d manor_crm -f database/manor_crm_seed.sql\"",
+    "prod:up": "docker compose -f docker-compose.prod.yml up --build -d",
+    "prod:down": "docker compose -f docker-compose.prod.yml down"
+  }
+}
