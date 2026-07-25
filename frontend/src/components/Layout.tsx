@@ -1,5 +1,6 @@
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
+import { FRONT_DESK, MARKETING_TEAM } from "../rbac";
 import { Role } from "../types";
 
 type NavItem = {
@@ -11,11 +12,11 @@ type NavItem = {
 const NAV_ITEMS: NavItem[] = [
   { to: "/", label: "Dashboard" },
   { to: "/customers", label: "Customers" },
-  { to: "/rooms", label: "Rooms" },
-  { to: "/reservations", label: "Reservations" },
-  { to: "/complaints", label: "Complaints" },
-  { to: "/campaigns", label: "Campaigns", roles: ["ADMIN", "MANAGER", "MARKETING"] },
-  { to: "/loyalty", label: "Loyalty" }
+  { to: "/rooms", label: "Rooms", roles: FRONT_DESK },
+  { to: "/reservations", label: "Reservations", roles: FRONT_DESK },
+  { to: "/complaints", label: "Complaints", roles: FRONT_DESK },
+  { to: "/campaigns", label: "Campaigns", roles: MARKETING_TEAM },
+  { to: "/loyalty", label: "Loyalty", roles: MARKETING_TEAM }
 ];
 
 const PAGE_TITLES: Record<string, { title: string; subtitle: string }> = {

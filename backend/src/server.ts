@@ -198,7 +198,7 @@ app.post("/rooms/quick-seed", frontDesk, async (_req, res) => {
   res.status(201).json({ message: "Rooms seeded", count: roomRows.length });
 });
 
-app.get("/reservations", async (_req, res) => {
+app.get("/reservations", frontDesk, async (_req, res) => {
   const reservations = await prisma.reservation.findMany({
     include: { customer: true, room: true, invoice: true },
     orderBy: { createdAt: "desc" }
@@ -206,7 +206,7 @@ app.get("/reservations", async (_req, res) => {
   res.json(reservations);
 });
 
-app.post("/reservations", async (req, res) => {
+app.post("/reservations", frontDesk, async (req, res) => {
   const parsed = reservationSchema.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({ error: "Invalid payload" });
@@ -229,7 +229,7 @@ app.post("/reservations", async (req, res) => {
   res.status(201).json(reservation);
 });
 
-app.patch("/reservations/:id/status", async (req, res) => {
+app.patch("/reservations/:id/status", frontDesk, async (req, res) => {
   const statusSchema = z.object({ status: z.nativeEnum(ReservationStatus) });
   const parsed = statusSchema.safeParse(req.body);
   if (!parsed.success) {
@@ -244,7 +244,7 @@ app.patch("/reservations/:id/status", async (req, res) => {
   res.json(updated);
 });
 
-app.get("/complaints", async (_req, res) => {
+app.get("/complaints", frontDesk, async (_req, res) => {
   const complaints = await prisma.complaint.findMany({
     include: { customer: true },
     orderBy: { createdAt: "desc" }
@@ -252,7 +252,7 @@ app.get("/complaints", async (_req, res) => {
   res.json(complaints);
 });
 
-app.post("/complaints", async (req, res) => {
+app.post("/complaints", frontDesk, async (req, res) => {
   const parsed = complaintSchema.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({ error: "Invalid payload" });
@@ -262,7 +262,7 @@ app.post("/complaints", async (req, res) => {
   res.status(201).json(complaint);
 });
 
-app.get("/campaigns", async (_req, res) => {
+app.get("/campaigns", marketingTeam, async (_req, res) => {
   const campaigns = await prisma.campaign.findMany({
     include: { recipients: true },
     orderBy: { createdAt: "desc" }
@@ -270,7 +270,7 @@ app.get("/campaigns", async (_req, res) => {
   res.json(campaigns);
 });
 
-app.post("/campaigns", requireRole(Role.ADMIN, Role.MANAGER, Role.MARKETING), async (req, res) => {
+app.post("/campaigns", marketingTeam, async (req, res) => {
   const parsed = campaignSchema.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({ error: "Invalid payload" });
@@ -292,7 +292,7 @@ app.post("/campaigns", requireRole(Role.ADMIN, Role.MANAGER, Role.MARKETING), as
   res.status(201).json(campaign);
 });
 
-app.post("/loyalty/transactions", async (req, res) => {
+app.post("/loyalty/transactions", marketingTeam, async (req, res) => {
   const parsed = loyaltySchema.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({ error: "Invalid payload" });

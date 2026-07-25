@@ -1,7 +1,9 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./auth/AuthContext";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import { RoleRoute } from "./components/RoleRoute";
 import { Layout } from "./components/Layout";
+import { FRONT_DESK, MARKETING_TEAM } from "./rbac";
 import { LoginPage } from "./pages/LoginPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { CustomersPage } from "./pages/CustomersPage";
@@ -21,11 +23,17 @@ export function App() {
           <Route element={<Layout />}>
             <Route path="/" element={<DashboardPage />} />
             <Route path="/customers" element={<CustomersPage />} />
-            <Route path="/rooms" element={<RoomsPage />} />
-            <Route path="/reservations" element={<ReservationsPage />} />
-            <Route path="/complaints" element={<ComplaintsPage />} />
-            <Route path="/campaigns" element={<CampaignsPage />} />
-            <Route path="/loyalty" element={<LoyaltyPage />} />
+
+            <Route element={<RoleRoute roles={FRONT_DESK} />}>
+              <Route path="/rooms" element={<RoomsPage />} />
+              <Route path="/reservations" element={<ReservationsPage />} />
+              <Route path="/complaints" element={<ComplaintsPage />} />
+            </Route>
+
+            <Route element={<RoleRoute roles={MARKETING_TEAM} />}>
+              <Route path="/campaigns" element={<CampaignsPage />} />
+              <Route path="/loyalty" element={<LoyaltyPage />} />
+            </Route>
           </Route>
         </Route>
 
