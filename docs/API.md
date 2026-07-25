@@ -2,6 +2,11 @@
 
 Base URL: `http://localhost:5000`
 
+Every endpoint below except `/health`, `/auth/register`, and `/auth/login` requires an
+`Authorization: Bearer <token>` header, where `<token>` comes from `POST /auth/login`.
+`POST /campaigns` additionally requires the caller's role to be `ADMIN`, `MANAGER`, or
+`MARKETING`.
+
 ## Health
 - `GET /health`
 

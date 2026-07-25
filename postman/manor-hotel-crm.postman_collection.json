@@ -4,12 +4,17 @@
     "name": "The Manor Hotel CRM API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
+  "auth": {
+    "type": "bearer",
+    "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+  },
   "item": [
     {
       "name": "Health",
       "request": {
         "method": "GET",
         "header": [],
+        "auth": { "type": "noauth" },
         "url": {
           "raw": "{{baseUrl}}/health",
           "host": ["{{baseUrl}}"],
@@ -22,6 +27,7 @@
       "request": {
         "method": "POST",
         "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "auth": { "type": "noauth" },
         "body": {
           "mode": "raw",
           "raw": "{\n  \"fullName\": \"Demo Admin\",\n  \"email\": \"demo@manorhotel.com\",\n  \"password\": \"Password123!\",\n  \"role\": \"ADMIN\"\n}"
@@ -35,9 +41,22 @@
     },
     {
       "name": "Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const body = pm.response.json();",
+              "if (body.token) { pm.collectionVariables.set('token', body.token); }"
+            ]
+          }
+        }
+      ],
       "request": {
         "method": "POST",
         "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "auth": { "type": "noauth" },
         "body": {
           "mode": "raw",
           "raw": "{\n  \"email\": \"admin@manorhotel.com\",\n  \"password\": \"Password123!\"\n}"
@@ -78,6 +97,10 @@
     {
       "key": "baseUrl",
       "value": "http://localhost:5000"
+    },
+    {
+      "key": "token",
+      "value": ""
     }
   ]
 }

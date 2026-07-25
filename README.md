@@ -1,9 +1,12 @@
 # The Manor Hotel CRM (Free Stack)
 
+A full-stack hotel CRM built as a final-year Business Information Technology project: guest
+profiles, room and reservation management, billing, complaint tracking, marketing campaigns,
+and a loyalty program, all behind JWT-authenticated, role-based access.
 
-
-- Frontend: React + TypeScript + Vite
-- Backend: Node.js + Express + TypeScript
+- Frontend: React + TypeScript + Vite (multi-page app: dashboard, customers, rooms,
+  reservations, complaints, campaigns, loyalty), styled as a hotel/hospitality product
+- Backend: Node.js + Express + TypeScript, JWT auth with role-based route guards
 - Database: PostgreSQL + Prisma ORM
 
 ## Project folders
@@ -88,14 +91,32 @@ After migration, import sample data:
 psql -h localhost -U postgres -d manor_crm -f database/manor_crm_seed.sql
 ```
 
-Default test users in seed file:
+Default test users in seed file (all use password `Password123!`):
 
-- `admin@manorhotel.com`
-- `reception@manorhotel.com`
-- `marketing@manorhotel.com`
-- Password hash corresponds to password: `Password123!`
+- `admin@manorhotel.com` — ADMIN
+- `reception@manorhotel.com` — RECEPTION
+- `marketing@manorhotel.com` — MARKETING
+
+You can also create additional staff accounts from the "Create account" tab on the login screen.
+
+## Frontend pages
+
+- **Login / Create account** — JWT sign-in and staff registration
+- **Dashboard** — live KPIs (customers, reservations, open complaints, revenue collected)
+- **Customers** — guest directory with loyalty tier and points
+- **Rooms** — inventory, rates, status, and a one-click starter seed
+- **Reservations** — booking form and status updates (confirmed → checked-in → checked-out)
+- **Complaints** — service recovery log with severity levels
+- **Campaigns** — marketing outreach by segment/channel (ADMIN, MANAGER, MARKETING only)
+- **Loyalty** — award or redeem guest loyalty points
 
 ## Included endpoints
+
+All routes below except `/health`, `/auth/register`, and `/auth/login` require an
+`Authorization: Bearer <token>` header obtained from `/auth/login`. `POST /campaigns` is further
+restricted to the `ADMIN`, `MANAGER`, and `MARKETING` roles. In the included Postman collection,
+run the **Login** request first — it stores the token in a collection variable automatically used
+by every other request.
 
 - `GET /health`
 - `POST /auth/register`

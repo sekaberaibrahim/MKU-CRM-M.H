@@ -27,6 +27,41 @@ app.get("/health", (_req, res) => {
   res.json({ status: "ok", service: "Manor CRM API" });
 });
 
+type AuthedRequest = express.Request & { user?: { sub: string; role: Role; email: string } };
+
+const publicRoutes = [
+  { method: "POST", path: "/auth/register" },
+  { method: "POST", path: "/auth/login" }
+];
+
+app.use((req: AuthedRequest, res, next) => {
+  const isPublic = publicRoutes.some((route) => route.method === req.method && route.path === req.path);
+  if (isPublic) {
+    return next();
+  }
+
+  const header = req.headers.authorization;
+  if (!header?.startsWith("Bearer ")) {
+    return res.status(401).json({ error: "Missing authorization token" });
+  }
+
+  try {
+    req.user = jwt.verify(header.slice(7), jwtSecret) as AuthedRequest["user"];
+    return next();
+  } catch {
+    return res.status(401).json({ error: "Invalid or expired token" });
+  }
+});
+
+function requireRole(...roles: Role[]) {
+  return (req: AuthedRequest, res: express.Response, next: express.NextFunction) => {
+    if (!req.user || !roles.includes(req.user.role)) {
+      return res.status(403).json({ error: "Insufficient permissions for this action" });
+    }
+    return next();
+  };
+}
+
 const registerSchema = z.object({
   fullName: z.string().min(2),
   email: z.string().email(),
@@ -138,12 +173,15 @@ app.post("/customers", async (req, res) => {
   res.status(201).json(customer);
 });
 
-app.get("/rooms", async (_req, res) => {
+const frontDesk = requireRole(Role.RECEPTION, Role.MANAGER, Role.ADMIN);
+const marketingTeam = requireRole(Role.MARKETING, Role.MANAGER, Role.ADMIN);
+
+app.get("/rooms", frontDesk, async (_req, res) => {
   const rooms = await prisma.room.findMany({ orderBy: { roomNumber: "asc" } });
   res.json(rooms);
 });
 
-app.post("/rooms/quick-seed", async (_req, res) => {
+app.post("/rooms/quick-seed", frontDesk, async (_req, res) => {
   const existing = await prisma.room.count();
   if (existing > 0) {
     return res.status(409).json({ error: "Rooms already seeded" });
@@ -232,7 +270,7 @@ app.get("/campaigns", async (_req, res) => {
   res.json(campaigns);
 });
 
-app.post("/campaigns", async (req, res) => {
+app.post("/campaigns", requireRole(Role.ADMIN, Role.MANAGER, Role.MARKETING), async (req, res) => {
   const parsed = campaignSchema.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({ error: "Invalid payload" });
