@@ -2,8 +2,12 @@ import { FormEvent, useEffect, useState } from "react";
 import { api, ApiError } from "../api";
 import { Customer } from "../types";
 import { StatusBadge } from "../components/StatusBadge";
+import { useAuth } from "../auth/AuthContext";
+import { MANAGEMENT } from "../rbac";
 
 export function CustomersPage() {
+  const { user } = useAuth();
+  const canDelete = Boolean(user && MANAGEMENT.includes(user.role));
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -12,6 +16,7 @@ export function CustomersPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const loadCustomers = async () => {
     const data = await api.get<Customer[]>("/customers");
@@ -44,6 +49,22 @@ export function CustomersPage() {
       setError(err instanceof ApiError ? err.message : "Failed to create customer");
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const deleteCustomer = async (id: string) => {
+    if (!window.confirm("Delete this customer? This cannot be undone.")) {
+      return;
+    }
+    setError("");
+    setDeletingId(id);
+    try {
+      await api.delete(`/customers/${id}`);
+      await loadCustomers();
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : "Failed to delete customer");
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -104,6 +125,7 @@ export function CustomersPage() {
                   <th>Country</th>
                   <th>Loyalty tier</th>
                   <th>Points</th>
+                  {canDelete ? <th></th> : null}
                 </tr>
               </thead>
               <tbody>
@@ -117,6 +139,18 @@ export function CustomersPage() {
                       <StatusBadge value={customer.loyaltyTier} />
                     </td>
                     <td>{customer.loyaltyPoints}</td>
+                    {canDelete ? (
+                      <td>
+                        <button
+                          type="button"
+                          className="btn-secondary btn-sm"
+                          disabled={deletingId === customer.id}
+                          onClick={() => deleteCustomer(customer.id)}
+                        >
+                          {deletingId === customer.id ? "Removing..." : "Remove"}
+                        </button>
+                      </td>
+                    ) : null}
                   </tr>
                 ))}
               </tbody>

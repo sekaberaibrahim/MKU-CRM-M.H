@@ -15,6 +15,10 @@ export type CampaignChannel = "EMAIL" | "SMS" | "WHATSAPP";
 export type CampaignStatus = "DRAFT" | "SCHEDULED" | "SENT";
 export type DeliveryStatus = "PENDING" | "SENT" | "FAILED";
 
+export type InvoiceStatus = "UNPAID" | "PARTIALLY_PAID" | "PAID" | "VOID";
+export type PaymentMethod = "CASH" | "CARD" | "BANK_TRANSFER" | "MOBILE_MONEY";
+export type InteractionChannel = "PHONE" | "EMAIL" | "FRONT_DESK" | "WHATSAPP";
+
 export type Customer = {
   id: string;
   fullName: string;
@@ -25,6 +29,46 @@ export type Customer = {
   loyaltyTier: LoyaltyTier;
   loyaltyPoints: number;
   createdAt: string;
+};
+
+export type StaffUser = {
+  id: string;
+  fullName: string;
+  email: string;
+  role: Role;
+  isActive: boolean;
+  createdAt: string;
+};
+
+export type Payment = {
+  id: string;
+  invoiceId: string;
+  method: PaymentMethod;
+  amount: string;
+  paidAt: string;
+  reference?: string | null;
+};
+
+export type Invoice = {
+  id: string;
+  reservationId: string;
+  subtotal: string;
+  taxAmount: string;
+  totalAmount: string;
+  status: InvoiceStatus;
+  issuedAt: string;
+  reservation?: Reservation;
+  payments: Payment[];
+};
+
+export type Interaction = {
+  id: string;
+  customerId: string;
+  channel: InteractionChannel;
+  subject: string;
+  notes: string;
+  happenedAt: string;
+  customer?: Customer;
 };
 
 export type Room = {

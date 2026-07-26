@@ -1,9 +1,10 @@
 import { FormEvent, useEffect, useState } from "react";
 import { api, ApiError } from "../api";
-import { Complaint, ComplaintSeverity, Customer } from "../types";
+import { Complaint, ComplaintSeverity, ComplaintStatus, Customer } from "../types";
 import { StatusBadge } from "../components/StatusBadge";
 
 const SEVERITY_OPTIONS: ComplaintSeverity[] = ["LOW", "MEDIUM", "HIGH", "CRITICAL"];
+const STATUS_OPTIONS: ComplaintStatus[] = ["OPEN", "IN_PROGRESS", "RESOLVED", "CLOSED"];
 
 export function ComplaintsPage() {
   const [complaints, setComplaints] = useState<Complaint[]>([]);
@@ -16,6 +17,7 @@ export function ComplaintsPage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [severity, setSeverity] = useState<ComplaintSeverity>("MEDIUM");
+  const [busyId, setBusyId] = useState<string | null>(null);
 
   const loadAll = async () => {
     const [complaintData, customerData] = await Promise.all([
@@ -47,6 +49,19 @@ export function ComplaintsPage() {
       setError(err instanceof ApiError ? err.message : "Failed to log complaint");
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const updateStatus = async (id: string, status: ComplaintStatus) => {
+    setError("");
+    setBusyId(id);
+    try {
+      await api.patch(`/complaints/${id}`, { status });
+      await loadAll();
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : "Failed to update complaint");
+    } finally {
+      setBusyId(null);
     }
   };
 
@@ -122,6 +137,7 @@ export function ComplaintsPage() {
                   <th>Severity</th>
                   <th>Status</th>
                   <th>Logged</th>
+                  <th>Update</th>
                 </tr>
               </thead>
               <tbody>
@@ -136,6 +152,19 @@ export function ComplaintsPage() {
                       <StatusBadge value={complaint.status} />
                     </td>
                     <td>{new Date(complaint.createdAt).toLocaleDateString()}</td>
+                    <td>
+                      <select
+                        value={complaint.status}
+                        disabled={busyId === complaint.id}
+                        onChange={(e) => updateStatus(complaint.id, e.target.value as ComplaintStatus)}
+                      >
+                        {STATUS_OPTIONS.map((option) => (
+                          <option key={option} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
                   </tr>
                 ))}
               </tbody>

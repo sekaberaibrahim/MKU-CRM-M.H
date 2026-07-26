@@ -3,15 +3,17 @@ import { AuthProvider } from "./auth/AuthContext";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { RoleRoute } from "./components/RoleRoute";
 import { Layout } from "./components/Layout";
-import { FRONT_DESK, MARKETING_TEAM } from "./rbac";
+import { ADMIN_ONLY, FRONT_DESK, MARKETING_TEAM } from "./rbac";
 import { LoginPage } from "./pages/LoginPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { CustomersPage } from "./pages/CustomersPage";
 import { RoomsPage } from "./pages/RoomsPage";
 import { ReservationsPage } from "./pages/ReservationsPage";
+import { InvoicesPage } from "./pages/InvoicesPage";
 import { ComplaintsPage } from "./pages/ComplaintsPage";
 import { CampaignsPage } from "./pages/CampaignsPage";
 import { LoyaltyPage } from "./pages/LoyaltyPage";
+import { StaffPage } from "./pages/StaffPage";
 
 export function App() {
   return (
@@ -27,12 +29,17 @@ export function App() {
             <Route element={<RoleRoute roles={FRONT_DESK} />}>
               <Route path="/rooms" element={<RoomsPage />} />
               <Route path="/reservations" element={<ReservationsPage />} />
+              <Route path="/invoices" element={<InvoicesPage />} />
               <Route path="/complaints" element={<ComplaintsPage />} />
             </Route>
 
             <Route element={<RoleRoute roles={MARKETING_TEAM} />}>
               <Route path="/campaigns" element={<CampaignsPage />} />
               <Route path="/loyalty" element={<LoyaltyPage />} />
+            </Route>
+
+            <Route element={<RoleRoute roles={ADMIN_ONLY} />}>
+              <Route path="/staff" element={<StaffPage />} />
             </Route>
           </Route>
         </Route>

@@ -12,7 +12,6 @@ type AuthContextValue = {
   user: AuthUser | null;
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<void>;
-  register: (fullName: string, email: string, password: string, role: Role) => Promise<void>;
   logout: () => void;
 };
 
@@ -52,18 +51,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setToken(res.token);
   };
 
-  const register = async (fullName: string, email: string, password: string, role: Role) => {
-    await api.post("/auth/register", { fullName, email, password, role });
-    await login(email, password);
-  };
-
   const logout = () => {
     localStorage.removeItem(STORAGE_KEY);
     setToken(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated: Boolean(user), login, register, logout }}>
+    <AuthContext.Provider value={{ user, isAuthenticated: Boolean(user), login, logout }}>
       {children}
     </AuthContext.Provider>
   );

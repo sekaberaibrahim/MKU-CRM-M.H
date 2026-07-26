@@ -29,7 +29,15 @@ const TONE_MAP: Record<string, Tone> = {
   BRONZE: "neutral",
   SILVER: "info",
   GOLD: "gold",
-  PLATINUM: "gold"
+  PLATINUM: "gold",
+
+  ACTIVE: "success",
+  INACTIVE: "danger",
+
+  UNPAID: "danger",
+  PARTIALLY_PAID: "warning",
+  PAID: "success",
+  VOID: "neutral"
 };
 
 export function StatusBadge({ value }: { value: string }) {

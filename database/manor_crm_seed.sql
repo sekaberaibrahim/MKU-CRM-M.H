@@ -2,10 +2,11 @@
 -- Import after Prisma migration:
 -- psql -h localhost -U postgres -d manor_crm -f database/manor_crm_seed.sql
 
-INSERT INTO "User" ("id","fullName","email","passwordHash","role","createdAt") VALUES
-('usr_admin_001','System Admin','admin@manorhotel.com','$2b$10$qKothKKUQ6R4jq9Y9l9kIe/ly.c/1EoHFevPWx31XK66irVNX69DG','ADMIN',NOW()),
-('usr_rcp_001','Front Desk One','reception@manorhotel.com','$2b$10$qKothKKUQ6R4jq9Y9l9kIe/ly.c/1EoHFevPWx31XK66irVNX69DG','RECEPTION',NOW()),
-('usr_mkt_001','Marketing Team','marketing@manorhotel.com','$2b$10$qKothKKUQ6R4jq9Y9l9kIe/ly.c/1EoHFevPWx31XK66irVNX69DG','MARKETING',NOW())
+INSERT INTO "User" ("id","fullName","email","passwordHash","role","isActive","createdAt","updatedAt") VALUES
+('usr_admin_001','System Admin','admin@manorhotel.com','$2b$10$qKothKKUQ6R4jq9Y9l9kIe/ly.c/1EoHFevPWx31XK66irVNX69DG','ADMIN',true,NOW(),NOW()),
+('usr_mgr_001','General Manager','manager@manorhotel.com','$2b$10$qKothKKUQ6R4jq9Y9l9kIe/ly.c/1EoHFevPWx31XK66irVNX69DG','MANAGER',true,NOW(),NOW()),
+('usr_rcp_001','Front Desk One','reception@manorhotel.com','$2b$10$qKothKKUQ6R4jq9Y9l9kIe/ly.c/1EoHFevPWx31XK66irVNX69DG','RECEPTION',true,NOW(),NOW()),
+('usr_mkt_001','Marketing Team','marketing@manorhotel.com','$2b$10$qKothKKUQ6R4jq9Y9l9kIe/ly.c/1EoHFevPWx31XK66irVNX69DG','MARKETING',true,NOW(),NOW())
 ON CONFLICT ("email") DO NOTHING;
 
 INSERT INTO "Room" ("id","roomNumber","type","ratePerNight","status") VALUES

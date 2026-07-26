@@ -1,6 +1,6 @@
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
-import { FRONT_DESK, MARKETING_TEAM } from "../rbac";
+import { ADMIN_ONLY, FRONT_DESK, MARKETING_TEAM } from "../rbac";
 import { Role } from "../types";
 
 type NavItem = {
@@ -14,9 +14,11 @@ const NAV_ITEMS: NavItem[] = [
   { to: "/customers", label: "Customers" },
   { to: "/rooms", label: "Rooms", roles: FRONT_DESK },
   { to: "/reservations", label: "Reservations", roles: FRONT_DESK },
+  { to: "/invoices", label: "Billing", roles: FRONT_DESK },
   { to: "/complaints", label: "Complaints", roles: FRONT_DESK },
   { to: "/campaigns", label: "Campaigns", roles: MARKETING_TEAM },
-  { to: "/loyalty", label: "Loyalty", roles: MARKETING_TEAM }
+  { to: "/loyalty", label: "Loyalty", roles: MARKETING_TEAM },
+  { to: "/staff", label: "Staff", roles: ADMIN_ONLY }
 ];
 
 const PAGE_TITLES: Record<string, { title: string; subtitle: string }> = {
@@ -24,9 +26,11 @@ const PAGE_TITLES: Record<string, { title: string; subtitle: string }> = {
   "/customers": { title: "Customers", subtitle: "Guest profiles and contact details" },
   "/rooms": { title: "Rooms", subtitle: "Inventory, rates, and current status" },
   "/reservations": { title: "Reservations", subtitle: "Bookings from check-in to check-out" },
+  "/invoices": { title: "Billing", subtitle: "Invoices and payments" },
   "/complaints": { title: "Complaints", subtitle: "Service recovery and guest issues" },
   "/campaigns": { title: "Campaigns", subtitle: "Marketing outreach to guest segments" },
-  "/loyalty": { title: "Loyalty", subtitle: "Award and track guest loyalty points" }
+  "/loyalty": { title: "Loyalty", subtitle: "Award and track guest loyalty points" },
+  "/staff": { title: "Staff", subtitle: "Manage staff accounts and roles" }
 };
 
 export function Layout() {

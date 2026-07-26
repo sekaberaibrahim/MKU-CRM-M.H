@@ -2,15 +2,11 @@ import { FormEvent, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import { ApiError } from "../api";
-import { Role } from "../types";
 
 export function LoginPage() {
-  const { isAuthenticated, login, register } = useAuth();
-  const [mode, setMode] = useState<"login" | "register">("login");
-  const [fullName, setFullName] = useState("");
+  const { isAuthenticated, login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState<Role>("RECEPTION");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
@@ -23,11 +19,7 @@ export function LoginPage() {
     setError("");
     setSubmitting(true);
     try {
-      if (mode === "login") {
-        await login(email, password);
-      } else {
-        await register(fullName, email, password, role);
-      }
+      await login(email, password);
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Something went wrong. Please try again.");
     } finally {
@@ -46,15 +38,6 @@ export function LoginPage() {
           </div>
         </div>
 
-        <div className="auth-tabs">
-          <button type="button" className={mode === "login" ? "active" : ""} onClick={() => setMode("login")}>
-            Sign in
-          </button>
-          <button type="button" className={mode === "register" ? "active" : ""} onClick={() => setMode("register")}>
-            Create account
-          </button>
-        </div>
-
         <form onSubmit={submit}>
           <div className="field" style={{ marginBottom: "0.85rem" }}>
             <label>Email</label>
@@ -66,18 +49,6 @@ export function LoginPage() {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-
-          {mode === "register" && (
-            <div className="field" style={{ marginBottom: "0.85rem" }}>
-              <label>Full name</label>
-              <input
-                required
-                placeholder="Jane Doe"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-              />
-            </div>
-          )}
 
           <div className="field" style={{ marginBottom: "0.85rem" }}>
             <label>Password</label>
@@ -91,26 +62,16 @@ export function LoginPage() {
             />
           </div>
 
-          {mode === "register" && (
-            <div className="field" style={{ marginBottom: "0.85rem" }}>
-              <label>Staff role</label>
-              <select value={role} onChange={(e) => setRole(e.target.value as Role)}>
-                <option value="RECEPTION">Reception</option>
-                <option value="MARKETING">Marketing</option>
-                <option value="MANAGER">Manager</option>
-                <option value="ADMIN">Admin</option>
-              </select>
-            </div>
-          )}
-
           <button type="submit" className="btn-primary btn-full" disabled={submitting}>
-            {submitting ? "Please wait..." : mode === "login" ? "Sign in" : "Create account"}
+            {submitting ? "Please wait..." : "Sign in"}
           </button>
 
           {error ? <div className="banner-error">{error}</div> : null}
         </form>
 
         <div className="auth-hint">
+          Staff accounts are provisioned by an administrator — see the "Staff" section once signed in as an admin.
+          <br />
           Demo accounts (password <strong>Password123!</strong>): admin@manorhotel.com &middot;
           reception@manorhotel.com &middot; marketing@manorhotel.com
         </div>
