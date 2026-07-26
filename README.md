@@ -228,6 +228,8 @@ the token in a collection variable used automatically by every other request.
 
 ## Final defense support files
 
+- **Full system documentation (stack, architecture, database ERD, auth/RBAC flow, worked
+  examples, Docker deployment flow): `docs/SYSTEM_DOCUMENTATION.md`** — start here
 - Architecture document and diagram: `docs/ARCHITECTURE.md`
 - Report writing template for PDF: `docs/FINAL_DEFENSE_REPORT_TEMPLATE.md`
 - Screenshot placeholders guide: `docs/screenshots/README.md`
