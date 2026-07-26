@@ -1,0 +1,13 @@
+{
+  "name": "manor-crm-docs-pdf-export",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Regenerates docs/The_Manor_Hotel_CRM_System_Documentation.pdf from docs/SYSTEM_DOCUMENTATION.md",
+  "scripts": {
+    "build": "node build.js && node render.js"
+  },
+  "dependencies": {
+    "marked": "^18.0.0",
+    "playwright-core": "^1.47.0"
+  }
+}

@@ -235,14 +235,14 @@ sequenceDiagram
     FE->>API: POST /invoices { reservationId }
     API->>DB: SELECT reservation + its room's ratePerNight
     API->>API: nights = ceil((checkOut - checkIn) / 1 day)
-    API->>API: subtotal = rate × nights; tax = subtotal × 18%; total = subtotal + tax
+    API->>API: subtotal = rate × nights, tax = subtotal × 18%, total = subtotal + tax
     API->>DB: INSERT Invoice (status = UNPAID)
     DB-->>API: invoice row
     API-->>FE: 201 Created
 
     Reception->>FE: Record a payment (method, amount)
     FE->>API: POST /invoices/:id/payments
-    API->>DB: INSERT Payment; sum all payments for this invoice
+    API->>DB: INSERT Payment, then sum all payments for this invoice
     API->>API: paid ≥ total → PAID · paid > 0 → PARTIALLY_PAID · else UNPAID
     API->>DB: UPDATE Invoice.status
     API-->>FE: 201 Created
