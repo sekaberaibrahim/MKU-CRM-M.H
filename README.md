@@ -113,31 +113,58 @@ Default test users in the seed file (all use password `Password123!`):
 
 Sign in as `ADMIN` and use the **Staff** page to create any further accounts.
 
-## Alternative: Dockerized PostgreSQL
+## Fully Dockerized setup (recommended for demos / showing the database to your lecturer)
 
-If you'd rather not touch your host PostgreSQL install, use the bundled container instead of
-steps 1 above (update `backend/.env`'s `DATABASE_URL` to `postgresql://postgres:postgres@localhost:5432/manor_crm?schema=public`):
-
-```bash
-docker compose up -d
-```
-
-## Production-style Docker run (all services containerized)
+One command builds and runs the entire stack — PostgreSQL, backend, frontend, and a pgAdmin
+GUI — with migrations and demo data applied automatically on first boot:
 
 ```bash
 docker compose -f docker-compose.prod.yml up --build -d
 ```
 
-Services:
+> If your host's local PostgreSQL service is already running (see the manual setup above), it
+> also listens on port 5432 and will conflict with the `db` container. Either stop it first
+> (`sudo systemctl stop postgresql`) or this Docker stack, whichever you're not using right now.
+
+Services once it's up:
 - Frontend: `http://localhost:8080`
 - Backend API: `http://localhost:5000`
-- PostgreSQL: `localhost:5432`
+- PostgreSQL: `localhost:5432` (user `postgres`, password `postgres`, db `manor_crm`)
+- **pgAdmin (database GUI): `http://localhost:8081`**
 
-Stop:
+### Viewing the database tables in pgAdmin
+
+This is the easiest way to show the actual database — tables, columns, rows — to a lecturer or
+during a defense, without needing the `psql` CLI:
+
+1. Open `http://localhost:8081`.
+2. Log in with email `lecturer@manorhotel.com`, password `manor_crm_dev_pw` (set in
+   `docker-compose.prod.yml`; change it there before a public demo if you want).
+3. In the left tree, expand **Servers** — "Manor Hotel CRM (Docker)" is already registered.
+4. Click it and enter the PostgreSQL password `postgres` when prompted (this one-time click is a
+   pgAdmin security requirement; it isn't pre-filled on purpose).
+5. Expand **Databases → manor_crm → Schemas → public → Tables** to see every table
+   (`Customer`, `Reservation`, `Invoice`, `Payment`, `User`, etc.) — right-click any table →
+   **View/Edit Data → All Rows** to show live rows.
+
+Stop everything (add `-v` to also wipe the database volume for a clean slate):
 
 ```bash
 docker compose -f docker-compose.prod.yml down
 ```
+
+## Alternative: Dockerized PostgreSQL only (no local install)
+
+If you'd rather not touch your host PostgreSQL install but don't want the full stack above,
+this brings up just a database + its own pgAdmin (`http://localhost:8081`, same pre-registered
+server, on host port `5433` to avoid clashing with a local install):
+
+```bash
+docker compose up -d
+```
+
+Point `backend/.env`'s `DATABASE_URL` at `postgresql://postgres:postgres@localhost:5433/manor_crm?schema=public`
+and continue from step 2 of the manual setup above.
 
 ## Running backend tests
 
