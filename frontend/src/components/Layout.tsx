@@ -40,7 +40,9 @@ export function Layout() {
     <div className="app-shell">
       <aside className="sidebar">
         <div className="sidebar__brand">
-          <span className="sidebar__mark">M</span>
+          <span className="sidebar__mark">
+            <img src="/brand/crest-charcoal.png" alt="" />
+          </span>
           <div>
             <div className="sidebar__brand-title">The Manor Hotel</div>
             <div className="sidebar__brand-subtitle">CRM Suite</div>
@@ -60,7 +62,10 @@ export function Layout() {
           ))}
         </nav>
 
-        <div className="sidebar__footer">Manor Hotel CRM &middot; Final Year Project</div>
+        <div className="sidebar__footer">
+          <img className="sidebar__footer-banner" src="/brand/logo-banner-dark.png" alt="The Manor Hotel" />
+          <span>Final Year Project</span>
+        </div>
       </aside>
 
       <div className="main">

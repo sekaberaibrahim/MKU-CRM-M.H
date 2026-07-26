@@ -29,9 +29,19 @@ export function LoginPage() {
 
   return (
     <div className="auth-shell">
+      <div className="auth-hero" role="presentation">
+        <img className="auth-hero__photo" src="/brand/hero-hotel.webp" alt="" />
+        <div className="auth-hero__overlay">
+          <img className="auth-hero__logo" src="/brand/logo-square-dark.png" alt="The Manor Hotel" />
+          <p className="auth-hero__tagline">Guest relationships, reservations, and revenue — in one place.</p>
+        </div>
+      </div>
+
       <div className="auth-card">
         <div className="auth-brand">
-          <span className="auth-brand__mark">M</span>
+          <span className="auth-brand__mark">
+            <img src="/brand/crest-white.png" alt="" />
+          </span>
           <div>
             <div className="auth-brand__title">The Manor Hotel</div>
             <div className="auth-brand__subtitle">CRM Suite</div>

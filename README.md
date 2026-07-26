@@ -1,5 +1,7 @@
 # The Manor Hotel CRM (Free Stack)
 
+<img src="frontend/public/brand/logo-wordmark-light.jpg" alt="The Manor Hotel" width="360" />
+
 A full-stack hotel CRM built as a final-year Business Information Technology project: guest
 profiles, room and reservation management, billing/invoicing, complaint tracking, marketing
 campaigns, and a loyalty program, all behind JWT-authenticated, role-based access control (RBAC).
