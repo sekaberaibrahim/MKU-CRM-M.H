@@ -16,7 +16,7 @@ const OUT_PDF = path.join(__dirname, "..", "The_Manor_Hotel_CRM_System_Documenta
   const blockCount = await page.locator("pre.mermaid, div.mermaid").count();
   console.log("mermaid blocks found:", blockCount);
   if (blockCount === 0) {
-    throw new Error("No .mermaid blocks found in the DOM — renderer override didn't produce them.");
+    throw new Error("No .mermaid blocks found in the DOM - renderer override didn't produce them.");
   }
 
   // wait for mermaid to finish turning each block into an <svg>

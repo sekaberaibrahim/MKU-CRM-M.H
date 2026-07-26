@@ -28,7 +28,7 @@ flowchart LR
 
 ## Main Modules
 
-- Authentication and role-based access control (admin-provisioned staff accounts only —
+- Authentication and role-based access control (admin-provisioned staff accounts only -
   see the RBAC permission matrix in the root `README.md`)
 - Customer profile management
 - Room and reservation management
@@ -45,10 +45,10 @@ flowchart LR
 Every request (other than `/health` and `POST /auth/login`) passes through:
 
 1. **Rate limiting** on the `/auth` router to slow credential-stuffing attempts.
-2. **JWT verification** — the token's `sub` claim is re-checked against the database on
+2. **JWT verification** - the token's `sub` claim is re-checked against the database on
    every request, so a deactivated account loses access immediately rather than waiting
    for its token to expire.
-3. **Role guard** (`requireRole`) — per-route allow-lists enforce the RBAC matrix.
-4. **helmet** — standard HTTP security headers.
-5. **Centralized error handling** — Prisma errors (unique constraint, not found, foreign
+3. **Role guard** (`requireRole`) - per-route allow-lists enforce the RBAC matrix.
+4. **helmet** - standard HTTP security headers.
+5. **Centralized error handling** - Prisma errors (unique constraint, not found, foreign
    key violation) are mapped to the correct HTTP status instead of leaking stack traces.

@@ -88,7 +88,7 @@ export function InvoicesPage() {
                 <option value="">Select reservation</option>
                 {uninvoicedReservations.map((r) => (
                   <option key={r.id} value={r.id}>
-                    {r.customer?.fullName ?? r.customerId} — Room {r.room?.roomNumber ?? r.roomId}
+                    {r.customer?.fullName ?? r.customerId} - Room {r.room?.roomNumber ?? r.roomId}
                   </option>
                 ))}
               </select>
@@ -131,7 +131,7 @@ export function InvoicesPage() {
                   const paid = invoice.payments.reduce((sum, p) => sum + Number(p.amount), 0);
                   return (
                     <tr key={invoice.id}>
-                      <td>{invoice.reservation?.customer?.fullName ?? "—"}</td>
+                      <td>{invoice.reservation?.customer?.fullName ?? "-"}</td>
                       <td>${Number(invoice.totalAmount).toFixed(2)}</td>
                       <td>${paid.toFixed(2)}</td>
                       <td>
@@ -140,7 +140,7 @@ export function InvoicesPage() {
                       <td>{new Date(invoice.issuedAt).toLocaleDateString()}</td>
                       <td>
                         {invoice.status === "PAID" ? (
-                          "—"
+                          "-"
                         ) : payingInvoiceId === invoice.id ? (
                           <form onSubmit={recordPayment} className="inline-form">
                             <select value={method} onChange={(e) => setMethod(e.target.value as PaymentMethod)}>

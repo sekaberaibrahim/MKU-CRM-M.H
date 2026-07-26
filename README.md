@@ -29,7 +29,7 @@ Roles: `ADMIN`, `MANAGER`, `MARKETING`, `RECEPTION`.
 
 There is **no public self-registration**. Staff accounts are created only by an `ADMIN` from the
 in-app "Staff" page (or `POST /users`), which prevents anyone from granting themselves an
-elevated role — a gap in earlier versions of this project where the public sign-up form let a
+elevated role - a gap in earlier versions of this project where the public sign-up form let a
 visitor pick their own role, including `ADMIN`.
 
 | Area | Read | Write |
@@ -43,7 +43,7 @@ visitor pick their own role, including `ADMIN`.
 | Campaigns & loyalty | MARKETING, MANAGER, ADMIN | MARKETING, MANAGER, ADMIN |
 | Staff accounts | ADMIN | ADMIN |
 
-Deactivating a staff account (`isActive = false`) takes effect immediately — the auth middleware
+Deactivating a staff account (`isActive = false`) takes effect immediately - the auth middleware
 re-checks account status on every request, not just at login/token-issue time.
 
 ## Quick setup (recommended)
@@ -61,7 +61,7 @@ chmod +x scripts/setup.sh
 ./scripts/setup.sh
 ```
 
-## Manual setup — local PostgreSQL (recommended on Linux)
+## Manual setup - local PostgreSQL (recommended on Linux)
 
 ### 1) Create the database and a dedicated role
 
@@ -106,17 +106,17 @@ PGPASSWORD=manor_crm_dev_pw psql -h localhost -U manor_crm -d manor_crm -f datab
 
 Default test users in the seed file (all use password `Password123!`):
 
-- `admin@manorhotel.com` — ADMIN
-- `manager@manorhotel.com` — MANAGER
-- `reception@manorhotel.com` — RECEPTION
-- `marketing@manorhotel.com` — MARKETING
+- `admin@manorhotel.com` - ADMIN
+- `manager@manorhotel.com` - MANAGER
+- `reception@manorhotel.com` - RECEPTION
+- `marketing@manorhotel.com` - MARKETING
 
 Sign in as `ADMIN` and use the **Staff** page to create any further accounts.
 
 ## Fully Dockerized setup (recommended for demos / showing the database to your lecturer)
 
-One command builds and runs the entire stack — PostgreSQL, backend, frontend, and a pgAdmin
-GUI — with migrations and demo data applied automatically on first boot:
+One command builds and runs the entire stack - PostgreSQL, backend, frontend, and a pgAdmin
+GUI - with migrations and demo data applied automatically on first boot:
 
 ```bash
 docker compose -f docker-compose.prod.yml up --build -d
@@ -134,17 +134,17 @@ Services once it's up:
 
 ### Viewing the database tables in pgAdmin
 
-This is the easiest way to show the actual database — tables, columns, rows — to a lecturer or
+This is the easiest way to show the actual database - tables, columns, rows - to a lecturer or
 during a defense, without needing the `psql` CLI:
 
 1. Open `http://localhost:8081`.
 2. Log in with email `lecturer@manorhotel.com`, password `manor_crm_dev_pw` (set in
    `docker-compose.prod.yml`; change it there before a public demo if you want).
-3. In the left tree, expand **Servers** — "Manor Hotel CRM (Docker)" is already registered.
+3. In the left tree, expand **Servers** - "Manor Hotel CRM (Docker)" is already registered.
 4. Click it and enter the PostgreSQL password `postgres` when prompted (this one-time click is a
    pgAdmin security requirement; it isn't pre-filled on purpose).
 5. Expand **Databases → manor_crm → Schemas → public → Tables** to see every table
-   (`Customer`, `Reservation`, `Invoice`, `Payment`, `User`, etc.) — right-click any table →
+   (`Customer`, `Reservation`, `Invoice`, `Payment`, `User`, etc.) - right-click any table →
    **View/Edit Data → All Rows** to show live rows.
 
 Stop everything (add `-v` to also wipe the database volume for a clean slate):
@@ -175,22 +175,22 @@ npm test
 
 ## Frontend pages
 
-- **Login** — JWT sign-in (no public sign-up; accounts are admin-provisioned)
-- **Dashboard** — live KPIs (customers, reservations, open complaints, revenue collected)
-- **Customers** — guest directory with loyalty tier and points
-- **Rooms** — inventory, rates, status, and a one-click starter seed
-- **Reservations** — booking form and status updates (confirmed → checked-in → checked-out)
-- **Billing** — generate invoices from reservations and record payments
-- **Complaints** — service recovery log with severity and status tracking
-- **Campaigns** — marketing outreach by segment/channel (MARKETING, MANAGER, ADMIN)
-- **Loyalty** — award or redeem guest loyalty points
-- **Staff** — create/deactivate staff accounts and change roles (ADMIN only)
+- **Login** - JWT sign-in (no public sign-up; accounts are admin-provisioned)
+- **Dashboard** - live KPIs (customers, reservations, open complaints, revenue collected)
+- **Customers** - guest directory with loyalty tier and points
+- **Rooms** - inventory, rates, status, and a one-click starter seed
+- **Reservations** - booking form and status updates (confirmed → checked-in → checked-out)
+- **Billing** - generate invoices from reservations and record payments
+- **Complaints** - service recovery log with severity and status tracking
+- **Campaigns** - marketing outreach by segment/channel (MARKETING, MANAGER, ADMIN)
+- **Loyalty** - award or redeem guest loyalty points
+- **Staff** - create/deactivate staff accounts and change roles (ADMIN only)
 
 ## Included endpoints
 
 Every route except `/health` and `POST /auth/login` requires an `Authorization: Bearer <token>`
-header obtained from `/auth/login`. Individual routes are further restricted by role — see the
-RBAC table above. In the included Postman collection, run the **Login** request first — it stores
+header obtained from `/auth/login`. Individual routes are further restricted by role - see the
+RBAC table above. In the included Postman collection, run the **Login** request first - it stores
 the token in a collection variable used automatically by every other request.
 
 - `GET /health`
@@ -229,7 +229,7 @@ the token in a collection variable used automatically by every other request.
 ## Final defense support files
 
 - **Full system documentation (stack, architecture, database ERD, auth/RBAC flow, worked
-  examples, Docker deployment flow): `docs/SYSTEM_DOCUMENTATION.md`** — start here
+  examples, Docker deployment flow): `docs/SYSTEM_DOCUMENTATION.md`** - start here
 - Architecture document and diagram: `docs/ARCHITECTURE.md`
 - Report writing template for PDF: `docs/FINAL_DEFENSE_REPORT_TEMPLATE.md`
 - Screenshot placeholders guide: `docs/screenshots/README.md`

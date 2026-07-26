@@ -33,7 +33,7 @@ export function LoginPage() {
         <img className="auth-hero__photo" src="/brand/hero-hotel.webp" alt="" />
         <div className="auth-hero__overlay">
           <img className="auth-hero__logo" src="/brand/logo-square-dark.png" alt="The Manor Hotel" />
-          <p className="auth-hero__tagline">Guest relationships, reservations, and revenue — in one place.</p>
+          <p className="auth-hero__tagline">Guest relationships, reservations, and revenue - in one place.</p>
         </div>
       </div>
 
@@ -80,7 +80,7 @@ export function LoginPage() {
         </form>
 
         <div className="auth-hint">
-          Staff accounts are provisioned by an administrator — see the "Staff" section once signed in as an admin.
+          Staff accounts are provisioned by an administrator - see the "Staff" section once signed in as an admin.
           <br />
           Demo accounts (password <strong>Password123!</strong>): admin@manorhotel.com &middot;
           reception@manorhotel.com &middot; marketing@manorhotel.com

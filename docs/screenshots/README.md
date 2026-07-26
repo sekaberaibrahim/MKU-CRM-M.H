@@ -9,7 +9,7 @@ Captured from a live run of the app against seeded demo data.
 - `05-billing-invoices.png`
 - `06-complaints-workflow.png`
 - `07-staff-administration.png`
-- `08-database-erd.png` — not yet captured; export from `npx prisma studio` or a
+- `08-database-erd.png` - not yet captured; export from `npx prisma studio` or a
   Postgres ERD tool before submission
 
 Recapture rules if you regenerate these:

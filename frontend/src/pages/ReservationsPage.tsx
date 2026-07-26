@@ -102,7 +102,7 @@ export function ReservationsPage() {
                 <option value="">Select room</option>
                 {rooms.map((room) => (
                   <option key={room.id} value={room.id}>
-                    {room.roomNumber} — {room.type}
+                    {room.roomNumber} - {room.type}
                   </option>
                 ))}
               </select>

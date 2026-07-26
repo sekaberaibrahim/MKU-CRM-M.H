@@ -9,7 +9,7 @@ if command -v psql >/dev/null 2>&1 && pg_isready >/dev/null 2>&1; then
     -c "SELECT 'CREATE DATABASE manor_crm OWNER manor_crm' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'manor_crm')\gexec" \
     -c "GRANT ALL PRIVILEGES ON DATABASE manor_crm TO manor_crm;"
 else
-  echo "Local PostgreSQL not detected — falling back to Docker Compose (postgres:16-alpine)."
+  echo "Local PostgreSQL not detected - falling back to Docker Compose (postgres:16-alpine)."
   docker compose up -d
 fi
 

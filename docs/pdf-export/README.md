@@ -24,12 +24,12 @@ This writes the updated PDF to `docs/The_Manor_Hotel_CRM_System_Documentation.pd
 - Google Chrome installed at `/usr/bin/google-chrome-stable` (edit the `executablePath` in
   `render.js` if yours lives elsewhere, or install the `chromium` package that ships with
   Playwright instead: `npx playwright install chromium` and drop the `executablePath` option).
-- Internet access (to load `mermaid.js` and `marked` from npm/CDN — no local install needed
+- Internet access (to load `mermaid.js` and `marked` from npm/CDN - no local install needed
   beyond the two npm dependencies above).
 
 ## Gotcha
 
 Mermaid's sequence-diagram parser treats a bare `;` inside a message as a statement terminator,
-not literal punctuation — if a diagram silently fails with "Syntax error in text" in the PDF,
+not literal punctuation - if a diagram silently fails with "Syntax error in text" in the PDF,
 check the corresponding ` ```mermaid ` block in `SYSTEM_DOCUMENTATION.md` for stray semicolons in
 message text and replace them with a comma or "then".

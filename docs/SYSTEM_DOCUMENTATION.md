@@ -1,7 +1,7 @@
-# The Manor Hotel CRM — System Documentation
+# The Manor Hotel CRM - System Documentation
 
 This document explains **how the system actually works**: the technology stack and why each
-piece was chosen, the layered architecture, the database design, and — most importantly — the
+piece was chosen, the layered architecture, the database design, and - most importantly - the
 end-to-end *flow* of data for the operations that matter (signing in, enforcing roles, booking a
 stay, billing a guest). Read this alongside `docs/API.md` (endpoint reference), `docs/ARCHITECTURE.md`
 (high-level diagram + security layer) and `docs/PROJECT_STRUCTURE.md` (file layout).
@@ -10,7 +10,7 @@ stay, billing a guest). Read this alongside `docs/API.md` (endpoint reference), 
 
 ## 1. What the system is
 
-A CRM for a single hotel property ("The Manor Hotel") used internally by hotel staff — there is
+A CRM for a single hotel property ("The Manor Hotel") used internally by hotel staff - there is
 no public-facing guest portal. Four kinds of staff use it, each with a different slice of the
 system:
 
@@ -21,7 +21,7 @@ system:
 | `MANAGER` | Operations manager | Everything reception + marketing can do |
 | `ADMIN` | System administrator | Everything, plus creating/deactivating staff accounts |
 
-There is deliberately **no self-service sign-up** — see §4. An `ADMIN` provisions every account.
+There is deliberately **no self-service sign-up** - see §4. An `ADMIN` provisions every account.
 
 ---
 
@@ -29,19 +29,19 @@ There is deliberately **no self-service sign-up** — see §4. An `ADMIN` provis
 
 | Layer | Technology | Why this one |
 | --- | --- | --- |
-| Frontend | **React + TypeScript + Vite** | Vite gives near-instant dev reloads; TypeScript catches whole classes of bugs (wrong field names, wrong roles) before runtime — valuable when the same `Role` type is checked in dozens of places. |
-| Routing | **React Router** | Nested routes map cleanly onto "authenticated vs not" and "this role vs not" gates (`ProtectedRoute`, `RoleRoute` — see §7). |
-| Backend | **Node.js + Express + TypeScript** | Express is minimal and explicit — every middleware in the request pipeline is visible in `app.ts` (§6), which matters for explaining *exactly* how a request is authenticated and authorized, a core requirement for a CRM handling guest and payment data. |
-| ORM | **Prisma** | Generates a fully-typed database client from `schema.prisma` (§3) — a typo'd column name or wrong type is a compile error, not a runtime surprise. `prisma migrate` also gives a reviewable, versioned history of every schema change (`backend/prisma/migrations/`). |
-| Database | **PostgreSQL** | Free, open-source, industry-standard relational database — a correct fit for data that is inherently relational (a Reservation *belongs to* a Customer *and* a Room; an Invoice *belongs to* a Reservation). |
+| Frontend | **React + TypeScript + Vite** | Vite gives near-instant dev reloads; TypeScript catches whole classes of bugs (wrong field names, wrong roles) before runtime - valuable when the same `Role` type is checked in dozens of places. |
+| Routing | **React Router** | Nested routes map cleanly onto "authenticated vs not" and "this role vs not" gates (`ProtectedRoute`, `RoleRoute` - see §7). |
+| Backend | **Node.js + Express + TypeScript** | Express is minimal and explicit - every middleware in the request pipeline is visible in `app.ts` (§6), which matters for explaining *exactly* how a request is authenticated and authorized, a core requirement for a CRM handling guest and payment data. |
+| ORM | **Prisma** | Generates a fully-typed database client from `schema.prisma` (§3) - a typo'd column name or wrong type is a compile error, not a runtime surprise. `prisma migrate` also gives a reviewable, versioned history of every schema change (`backend/prisma/migrations/`). |
+| Database | **PostgreSQL** | Free, open-source, industry-standard relational database - a correct fit for data that is inherently relational (a Reservation *belongs to* a Customer *and* a Room; an Invoice *belongs to* a Reservation). |
 | Auth | **JWT (jsonwebtoken) + bcrypt** | Stateless tokens mean the API doesn't need a server-side session store; bcrypt is the standard for password hashing (§4). |
 | Security middleware | **helmet, express-rate-limit** | helmet sets standard hardening HTTP headers; rate-limiting slows credential-stuffing against `/auth/login`. |
-| Validation | **zod** | Every request body is parsed against a schema before touching the database — malformed input never reaches Prisma. |
+| Validation | **zod** | Every request body is parsed against a schema before touching the database - malformed input never reaches Prisma. |
 | Testing | **Vitest** | Fast, TypeScript-native; used for the RBAC guard and error-mapping middleware (`backend/src/middleware/*.test.ts`), run in CI. |
-| Containers | **Docker + Docker Compose** | One command reproduces the entire stack identically on any machine — see §8. |
-| DB GUI | **pgAdmin** (containerized) | Lets anyone — a lecturer, a teammate — inspect real tables and rows without installing anything or knowing SQL. |
+| Containers | **Docker + Docker Compose** | One command reproduces the entire stack identically on any machine - see §8. |
+| DB GUI | **pgAdmin** (containerized) | Lets anyone - a lecturer, a teammate - inspect real tables and rows without installing anything or knowing SQL. |
 
-Every item above is free and open-source — a hard requirement for this project.
+Every item above is free and open-source - a hard requirement for this project.
 
 ---
 
@@ -133,15 +133,15 @@ erDiagram
 
 Notes on the design:
 
-- **`User` is intentionally isolated** — no foreign keys connect it to guest-facing tables. Staff
+- **`User` is intentionally isolated** - no foreign keys connect it to guest-facing tables. Staff
   identity and guest/business data are separate concerns; a staff account being deleted can never
   cascade into deleting reservations or invoices.
-- **`Invoice.reservationId` is unique** — a reservation has at most one invoice, generated on
+- **`Invoice.reservationId` is unique** - a reservation has at most one invoice, generated on
   demand (§5.3), not automatically at booking time.
-- **`Complaint.assignedToId`** is a plain string, not a Prisma relation to `User` — a deliberate
+- **`Complaint.assignedToId`** is a plain string, not a Prisma relation to `User` - a deliberate
   simplification (it's a label, not an enforced foreign key) rather than an oversight; a real
   next iteration would make it a proper relation.
-- All monetary columns are `Decimal(10,2)` (via `@db.Decimal`), never `Float` — avoids
+- All monetary columns are `Decimal(10,2)` (via `@db.Decimal`), never `Float` - avoids
   floating-point rounding errors in money math (see §5.3's tax calculation).
 
 ---
@@ -166,13 +166,13 @@ sequenceDiagram
     end
 ```
 
-The frontend never stores a password — only the signed JWT. `AuthContext` decodes the token
+The frontend never stores a password - only the signed JWT. `AuthContext` decodes the token
 client-side (`atob` on the payload segment) purely to render the user's name/role in the UI; the
-decoded role is **never trusted for access control** — every protected action is re-checked
+decoded role is **never trusted for access control** - every protected action is re-checked
 server-side (§5), because a client-side check is trivially bypassable.
 
 **Why there's no `/auth/register`:** earlier versions of this project had a public sign-up form
-that let anyone choose their own role — including `ADMIN`. That's a critical RBAC hole for a
+that let anyone choose their own role - including `ADMIN`. That's a critical RBAC hole for a
 system that gates money (billing) and guest data behind roles. It was removed; see §5.4.
 
 ---
@@ -197,11 +197,11 @@ flowchart LR
 
 ### 5.1 `authenticate` (backend/src/middleware/auth.ts)
 
-1. Reads the `Authorization: Bearer <token>` header — missing header → `401`.
-2. `jwt.verify(token, JWT_SECRET)` — invalid/expired signature → `401`.
+1. Reads the `Authorization: Bearer <token>` header - missing header → `401`.
+2. `jwt.verify(token, JWT_SECRET)` - invalid/expired signature → `401`.
 3. **Re-fetches the user from the database by the token's `sub` claim** and checks `isActive`.
    This is the important part: it means deactivating a staff account (Staff page → Deactivate)
-   revokes access **immediately**, on the very next request — not eight hours later when the
+   revokes access **immediately**, on the very next request - not eight hours later when the
    token would otherwise expire. A JWT alone can't do this; the DB check is what makes it real.
 4. Attaches `req.user = { sub, role, email }` for downstream middleware.
 
@@ -209,9 +209,9 @@ flowchart LR
 
 A tiny factory: `requireRole(Role.ADMIN)` returns middleware that checks
 `roles.includes(req.user.role)`, responding `403` if not. Every route file composes this per
-endpoint — e.g. `roomsRouter.post("/", requireRole(...MANAGEMENT), ...)`. The full matrix of
+endpoint - e.g. `roomsRouter.post("/", requireRole(...MANAGEMENT), ...)`. The full matrix of
 who can do what is in the README's RBAC table and mirrors 1:1 with the `frontend/src/rbac.ts`
-constants used to hide nav links/routes the current user can't use anyway (a UX nicety — the
+constants used to hide nav links/routes the current user can't use anyway (a UX nicety - the
 backend guard is the actual security boundary, not the hidden nav link).
 
 ### 5.3 Worked example: booking a stay and billing it
@@ -249,7 +249,7 @@ sequenceDiagram
     FE-->>Reception: Invoice status badge updates (UNPAID → PARTIALLY_PAID → PAID)
 ```
 
-This is a real, tested flow — not hypothetical: generating an invoice for a 3-night SUITE
+This is a real, tested flow - not hypothetical: generating an invoice for a 3-night SUITE
 booking at $180/night produces subtotal $540.00, tax $97.20, total $637.20; a $100 payment moves
 its status to `PARTIALLY_PAID`.
 
@@ -264,7 +264,7 @@ sequenceDiagram
 
     Admin->>FE: Fill name/email/temp password/role
     FE->>API: POST /users (Bearer token = Admin's JWT)
-    API->>API: requireRole(ADMIN) — anyone else gets 403
+    API->>API: requireRole(ADMIN) - anyone else gets 403
     API->>API: bcrypt.hash(password, 10)
     API->>DB: INSERT User (role = whatever Admin picked)
     DB-->>API: user row
@@ -274,7 +274,7 @@ sequenceDiagram
 
 Contrast this with the old, removed flow: a public `/auth/register` endpoint accepted a `role`
 field straight from an unauthenticated request body. Now, the **only** way a `role` field reaches
-the database is through this admin-gated endpoint — closing the hole completely rather than
+the database is through this admin-gated endpoint - closing the hole completely rather than
 patching around it (e.g. by "hiding" the role picker in the UI while leaving the backend open,
 which would have been security theater).
 
@@ -307,7 +307,7 @@ backend/src/
 
 Every route handler follows the same shape: `zod` schema validates the body → Prisma does the
 database work → response. Errors (bad input → `400`; Prisma constraint violations → mapped by
-`errorHandler`) never crash the process — `asyncHandler` guarantees that.
+`errorHandler`) never crash the process - `asyncHandler` guarantees that.
 
 ---
 
@@ -348,7 +348,7 @@ Route tree shape (from `App.tsx`):
     /staff
 ```
 
-`RoleRoute` is a client-side convenience — it hides pages a role can't use so the UI doesn't
+`RoleRoute` is a client-side convenience - it hides pages a role can't use so the UI doesn't
 show dead ends. It is **not** the security boundary; every one of those pages calls an endpoint
 that independently re-checks the role server-side (§5.2). Removing `RoleRoute` would make the UI
 show broken/forbidden pages, but would not open any actual security hole, because the backend
@@ -375,7 +375,7 @@ flowchart TD
 ```
 
 `docker-compose.prod.yml` builds the backend from the **repo root** as its context (not just
-`backend/`) specifically so the Dockerfile can also `COPY database ./database` — the seed SQL
+`backend/`) specifically so the Dockerfile can also `COPY database ./database` - the seed SQL
 needs to be inside the image for the entrypoint script to run it. The same image is used whether
 you're developing locally or demoing on a completely different machine, which is the point of
 containerizing in the first place: identical behavior everywhere.
@@ -392,7 +392,7 @@ See the root `README.md` for the actual commands and pgAdmin login details.
 | Stolen/leaked JWT after account deactivation | `isActive` re-checked against the DB on every request, not just at login (§5.1) |
 | Brute-forcing login | `express-rate-limit` on `/auth/*` (20 req / 15 min / IP) |
 | Common web vulnerabilities (clickjacking, MIME sniffing, etc.) | `helmet` default header set |
-| SQL injection | Prisma parameterizes all queries — no raw string-built SQL anywhere in the routes |
+| SQL injection | Prisma parameterizes all queries - no raw string-built SQL anywhere in the routes |
 | Malformed request bodies reaching the DB | `zod` schema validation on every route before any Prisma call |
 | Cross-origin requests from arbitrary sites | `cors` restricted to `CORS_ORIGIN` (the frontend's own origin) |
 | Passwords at rest | `bcrypt` hashing (cost factor 10), never stored or logged in plaintext |

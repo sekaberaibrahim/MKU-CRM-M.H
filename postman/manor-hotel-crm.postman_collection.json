@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "6f566f0f-6ae4-4e6f-8e20-f8b0fd5dc9d2",
     "name": "The Manor Hotel CRM API",
-    "description": "Run 'Login (Admin)' first — it stores {{token}} automatically, used by every other request. Requests that create records (customer, room, reservation, invoice, staff) capture their id into a collection variable so downstream requests can chain off them. See docs/API.md for the full RBAC matrix.",
+    "description": "Run 'Login (Admin)' first - it stores {{token}} automatically, used by every other request. Requests that create records (customer, room, reservation, invoice, staff) capture their id into a collection variable so downstream requests can chain off them. See docs/API.md for the full RBAC matrix.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {

@@ -132,9 +132,9 @@ export function CustomersPage() {
                 {customers.map((customer) => (
                   <tr key={customer.id}>
                     <td>{customer.fullName}</td>
-                    <td>{customer.email || "—"}</td>
-                    <td>{customer.phone || "—"}</td>
-                    <td>{customer.country || "—"}</td>
+                    <td>{customer.email || "-"}</td>
+                    <td>{customer.phone || "-"}</td>
+                    <td>{customer.country || "-"}</td>
                     <td>
                       <StatusBadge value={customer.loyaltyTier} />
                     </td>

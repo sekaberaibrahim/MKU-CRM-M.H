@@ -28,7 +28,7 @@ const html = `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>The Manor Hotel CRM — System Documentation</title>
+<title>The Manor Hotel CRM - System Documentation</title>
 <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
 <style>
   @page { size: A4; margin: 20mm 16mm; }
@@ -110,7 +110,7 @@ const html = `<!doctype html>
   <h1>The Manor Hotel CRM</h1>
   <div class="subtitle">System Documentation</div>
   <div class="meta">
-    Final Year Project — Business Information Technology<br/>
+    Final Year Project - Business Information Technology<br/>
     Case Study: The Manor Hotel, Nyarutarama, Kigali, Rwanda
   </div>
 </div>
