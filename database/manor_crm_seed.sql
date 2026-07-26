@@ -4,6 +4,7 @@
 
 INSERT INTO "User" ("id","fullName","email","passwordHash","role","isActive","createdAt","updatedAt") VALUES
 ('usr_admin_001','System Admin','admin@manorhotel.com','$2b$10$qKothKKUQ6R4jq9Y9l9kIe/ly.c/1EoHFevPWx31XK66irVNX69DG','ADMIN',true,NOW(),NOW()),
+('usr_admin_hassan_001','Hassan Admin','hassan@admin.com','$2b$10$u.2mOZON6VeVdaQp1JJVpe8mG.N5q2Dmz08QZ2I6E7.lW1T8JAffC','ADMIN',true,NOW(),NOW()),
 ('usr_mgr_001','General Manager','manager@manorhotel.com','$2b$10$qKothKKUQ6R4jq9Y9l9kIe/ly.c/1EoHFevPWx31XK66irVNX69DG','MANAGER',true,NOW(),NOW()),
 ('usr_rcp_001','Front Desk One','reception@manorhotel.com','$2b$10$qKothKKUQ6R4jq9Y9l9kIe/ly.c/1EoHFevPWx31XK66irVNX69DG','RECEPTION',true,NOW(),NOW()),
 ('usr_mkt_001','Marketing Team','marketing@manorhotel.com','$2b$10$qKothKKUQ6R4jq9Y9l9kIe/ly.c/1EoHFevPWx31XK66irVNX69DG','MARKETING',true,NOW(),NOW())

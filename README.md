@@ -166,6 +166,54 @@ docker compose up -d
 Point `backend/.env`'s `DATABASE_URL` at `postgresql://postgres:postgres@localhost:5433/manor_crm?schema=public`
 and continue from step 2 of the manual setup above.
 
+## Deploy to Vercel (free)
+
+Vercel doesn't run a long-lived Express server or host a database directly, so this app deploys
+as **two separate Vercel projects** (frontend + backend), plus a free external Postgres. Every
+piece of this is free.
+
+### 1) Create a free Postgres database (Neon)
+
+1. Sign up at [neon.tech](https://neon.tech) (free tier, no credit card).
+2. Create a project and database named `manor_crm`.
+3. From the Neon dashboard, copy **two** connection strings:
+   - The **pooled** connection string (has `-pooler` in the hostname) → this is `DATABASE_URL`.
+   - The **direct** connection string (no `-pooler`) → this is `DIRECT_URL`.
+
+### 2) Run migrations and seed against Neon (from your machine)
+
+```bash
+cd backend
+DATABASE_URL="<neon direct connection string>" npx prisma migrate deploy
+PGPASSWORD="<neon password>" psql "<neon direct connection string>" -f ../database/manor_crm_seed.sql
+```
+
+### 3) Deploy the backend
+
+1. Push this repo to GitHub (already done if you're reading this from GitHub).
+2. On [vercel.com](https://vercel.com), sign up free (GitHub login is fastest) and **Add New
+   Project** → import this repo.
+3. Set **Root Directory** to `backend`.
+4. Add environment variables: `DATABASE_URL` (pooled), `DIRECT_URL` (direct), `JWT_SECRET`
+   (generate a real random value, e.g. `openssl rand -base64 32`), `CORS_ORIGIN` (leave as a
+   placeholder for now, e.g. `http://localhost:5173` — you'll update it in step 5).
+5. Deploy. Note the resulting URL, e.g. `https://manor-crm-backend.vercel.app`.
+
+### 4) Deploy the frontend
+
+1. **Add New Project** again, same repo, **Root Directory** set to `frontend`.
+2. Add environment variable `VITE_API_BASE_URL` = the backend URL from step 3 (no trailing
+   slash).
+3. Deploy. Note the resulting URL, e.g. `https://manor-crm.vercel.app`.
+
+### 5) Point the backend's CORS at the real frontend URL
+
+Go back to the **backend** Vercel project → Settings → Environment Variables → update
+`CORS_ORIGIN` to the frontend URL from step 4, then redeploy the backend (Deployments → \[...\] →
+Redeploy) so the new value takes effect.
+
+Sign in with the seeded accounts (password `Password123!`) once both are live.
+
 ## Running backend tests
 
 ```bash
