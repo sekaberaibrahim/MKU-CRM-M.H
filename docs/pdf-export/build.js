@@ -2,10 +2,29 @@ const fs = require("fs");
 const path = require("path");
 const { marked } = require("marked");
 
-const SRC = "/home/ibraah/MKU-CRM-M.H/docs/SYSTEM_DOCUMENTATION.md";
+const SYSTEM_DOC = "/home/ibraah/MKU-CRM-M.H/docs/SYSTEM_DOCUMENTATION.md";
+const README = "/home/ibraah/MKU-CRM-M.H/README.md";
 const OUT_HTML = path.join(__dirname, "doc.html");
 
-const md = fs.readFileSync(SRC, "utf8");
+const systemDocMd = fs
+  .readFileSync(SYSTEM_DOC, "utf8")
+  .replace(/^# The Manor Hotel CRM - System Documentation\s*\n/, "# Part I: System Documentation\n");
+
+// Trim the README down to what belongs in a combined PDF: drop its own title/logo image
+// (the title page already covers that) and the "Final defense support files" section, which
+// only points at other files in this repo and is meaningless once exported.
+let readmeMd = fs.readFileSync(README, "utf8");
+readmeMd = readmeMd
+  .replace(/^# The Manor Hotel CRM \(Free Stack\)\s*\n/, "")
+  .replace(/^<img src="frontend\/public\/brand\/logo-wordmark-light\.jpg"[^\n]*\n/m, "")
+  .replace(/## Final defense support files[\s\S]*$/, "")
+  .trim();
+
+const md =
+  systemDocMd.trim() +
+  "\n\n<div class=\"part-break\"></div>\n\n# Part II: Setup, Running, and Deployment Guide\n\n" +
+  readmeMd +
+  "\n";
 
 const renderer = new marked.Renderer();
 const originalCode = renderer.code.bind(renderer);
@@ -28,7 +47,7 @@ const html = `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>The Manor Hotel CRM - System Documentation</title>
+<title>The Manor Hotel CRM - Project Documentation & Setup Guide</title>
 <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
 <style>
   @page { size: A4; margin: 20mm 16mm; }
@@ -73,6 +92,8 @@ const html = `<!doctype html>
     padding: 12px 14px;
     border-radius: 6px;
     overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
     font-size: 9.5pt;
     page-break-inside: avoid;
   }
@@ -101,6 +122,7 @@ const html = `<!doctype html>
   .titlepage h1 { border: none; font-size: 30pt; margin-bottom: 0.3em; }
   .titlepage .subtitle { font-size: 15pt; color: #6b6455; font-family: "Helvetica Neue", Arial, sans-serif; }
   .titlepage .meta { margin-top: 4em; font-size: 11pt; color: #6b6455; font-family: "Helvetica Neue", Arial, sans-serif; }
+  .part-break { page-break-before: always; }
 </style>
 </head>
 <body>
@@ -108,7 +130,7 @@ const html = `<!doctype html>
 <div class="titlepage">
   <img src="file:///home/ibraah/MKU-CRM-M.H/frontend/public/brand/logo-square-dark.png" alt="The Manor Hotel" />
   <h1>The Manor Hotel CRM</h1>
-  <div class="subtitle">System Documentation</div>
+  <div class="subtitle">Project Documentation &amp; Setup Guide</div>
   <div class="meta">
     Final Year Project - Business Information Technology<br/>
     Case Study: The Manor Hotel, Nyarutarama, Kigali, Rwanda

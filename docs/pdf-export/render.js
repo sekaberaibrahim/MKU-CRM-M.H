@@ -2,7 +2,7 @@ const path = require("path");
 const { chromium } = require(path.join(__dirname, "node_modules/playwright-core"));
 
 const HTML = "file://" + path.join(__dirname, "doc.html");
-const OUT_PDF = path.join(__dirname, "..", "The_Manor_Hotel_CRM_System_Documentation.pdf");
+const OUT_PDF = path.join(__dirname, "..", "The_Manor_Hotel_CRM_Documentation.pdf");
 
 (async () => {
   const browser = await chromium.launch({ executablePath: "/usr/bin/google-chrome-stable", args: ["--no-sandbox"] });

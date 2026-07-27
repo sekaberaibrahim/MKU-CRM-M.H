@@ -196,7 +196,7 @@ PGPASSWORD="<neon password>" psql "<neon direct connection string>" -f ../databa
 3. Set **Root Directory** to `backend`.
 4. Add environment variables: `DATABASE_URL` (pooled), `DIRECT_URL` (direct), `JWT_SECRET`
    (generate a real random value, e.g. `openssl rand -base64 32`), `CORS_ORIGIN` (leave as a
-   placeholder for now, e.g. `http://localhost:5173` — you'll update it in step 5).
+   placeholder for now, e.g. `http://localhost:5173` - you'll update it in step 5).
 5. Deploy. Note the resulting URL, e.g. `https://manor-crm-backend.vercel.app`.
 
 ### 4) Deploy the frontend

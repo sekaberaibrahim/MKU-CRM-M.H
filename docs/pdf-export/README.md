@@ -1,7 +1,14 @@
-# Regenerating the System Documentation PDF
+# Regenerating the Project Documentation PDF
 
-`docs/The_Manor_Hotel_CRM_System_Documentation.pdf` is generated from
-`docs/SYSTEM_DOCUMENTATION.md`. After editing that markdown file, regenerate the PDF with:
+`docs/The_Manor_Hotel_CRM_Documentation.pdf` is generated from two source files, concatenated
+into one document with a page break and a "Part II" heading in between:
+
+- Part I: `docs/SYSTEM_DOCUMENTATION.md` (what the system is, the stack, architecture, RBAC flow)
+- Part II: the root `README.md` (setup, running locally, Docker, deploying to Vercel), minus its
+  own title/logo (the PDF's title page already covers that) and the "Final defense support
+  files" section (which only points at other files in this repo and is meaningless once exported)
+
+After editing either source file, regenerate the PDF with:
 
 ```bash
 cd docs/pdf-export
@@ -9,13 +16,14 @@ npm install
 npm run build
 ```
 
-This writes the updated PDF to `docs/The_Manor_Hotel_CRM_System_Documentation.pdf`.
+This writes the updated PDF to `docs/The_Manor_Hotel_CRM_Documentation.pdf`.
 
 ## How it works
 
-- `build.js` converts the markdown to a styled, print-ready HTML file (`doc.html`), with a title
-  page and Mermaid diagram blocks (` ```mermaid ` fences) turned into `<pre class="mermaid">`
-  elements for the Mermaid.js library (loaded from a CDN) to render client-side.
+- `build.js` reads both markdown files, trims and concatenates them (see above), and converts
+  the result to a styled, print-ready HTML file (`doc.html`) with a title page. Mermaid diagram
+  blocks (` ```mermaid ` fences) are turned into `<pre class="mermaid">` elements for the
+  Mermaid.js library (loaded from a CDN) to render client-side.
 - `render.js` opens that HTML file in headless Chrome (via `playwright-core`), waits for every
   Mermaid diagram to finish rendering to an SVG, then prints the page to PDF.
 
