@@ -4,10 +4,10 @@ WORKDIR /app
 RUN apk add --no-cache openssl postgresql-client
 
 COPY backend/package*.json ./
+COPY backend/prisma ./prisma
 RUN npm install
 
 COPY backend/tsconfig.json ./
-COPY backend/prisma ./prisma
 COPY backend/src ./src
 COPY backend/docker-entrypoint.sh ./
 COPY database ./database
