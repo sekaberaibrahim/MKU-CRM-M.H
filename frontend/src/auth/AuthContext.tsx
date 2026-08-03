@@ -40,19 +40,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     setUnauthorizedHandler(() => {
       localStorage.removeItem(STORAGE_KEY);
+      setAuthToken(null);
       setToken(null);
     });
     return () => setUnauthorizedHandler(null);
   }, []);
 
   const login = async (email: string, password: string) => {
-    const res = await api.post<{ token: string }>("/auth/login", { email, password });
+    const res = await api.post<{ token: string }> ("/auth/login", { email, password });
     localStorage.setItem(STORAGE_KEY, res.token);
+    setAuthToken(res.token);
     setToken(res.token);
   };
 
   const logout = () => {
     localStorage.removeItem(STORAGE_KEY);
+    setAuthToken(null);
     setToken(null);
   };
 

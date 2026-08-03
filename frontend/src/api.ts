@@ -1,4 +1,5 @@
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:5000";
+const STORAGE_KEY = "manor_crm_token";
 
 export class ApiError extends Error {
   status: number;
@@ -9,7 +10,7 @@ export class ApiError extends Error {
   }
 }
 
-let authToken: string | null = null;
+let authToken: string | null = typeof window !== "undefined" ? localStorage.getItem(STORAGE_KEY) : null;
 let unauthorizedHandler: (() => void) | null = null;
 
 export function setAuthToken(token: string | null) {
@@ -21,12 +22,13 @@ export function setUnauthorizedHandler(handler: (() => void) | null) {
 }
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
+  const resolvedToken = authToken ?? (typeof window !== "undefined" ? localStorage.getItem(STORAGE_KEY) : null);
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
     ...(options.headers as Record<string, string> | undefined)
   };
-  if (authToken) {
-    headers.Authorization = `Bearer ${authToken}`;
+  if (resolvedToken) {
+    headers.Authorization = `Bearer ${resolvedToken}`;
   }
 
   const res = await fetch(`${API_BASE}${path}`, { ...options, headers });

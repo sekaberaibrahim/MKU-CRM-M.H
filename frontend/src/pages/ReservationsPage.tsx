@@ -13,6 +13,7 @@ export function ReservationsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const availableRooms = rooms.filter((room) => room.status === "AVAILABLE");
 
   const [customerId, setCustomerId] = useState("");
   const [roomId, setRoomId] = useState("");
@@ -100,7 +101,7 @@ export function ReservationsPage() {
               <label>Room</label>
               <select required value={roomId} onChange={(e) => setRoomId(e.target.value)}>
                 <option value="">Select room</option>
-                {rooms.map((room) => (
+                {availableRooms.map((room) => (
                   <option key={room.id} value={room.id}>
                     {room.roomNumber} - {room.type}
                   </option>
@@ -154,13 +155,21 @@ export function ReservationsPage() {
                 onChange={(e) => setChildren(Number(e.target.value))}
               />
             </div>
-            <button type="submit" className="btn-primary" disabled={submitting || !customers.length || !rooms.length}>
+            <button
+              type="submit"
+              className="btn-primary"
+              disabled={submitting || !customers.length || !availableRooms.length}
+            >
               {submitting ? "Booking..." : "Create reservation"}
             </button>
           </div>
         </form>
-        {!loading && (!customers.length || !rooms.length) ? (
-          <div className="banner-error">Add at least one customer and room before creating a reservation.</div>
+        {!loading && (!customers.length || !availableRooms.length) ? (
+          <div className="banner-error">
+            {availableRooms.length === 0
+              ? "No rooms are available to book right now. All rooms are occupied or unavailable."
+              : "Add at least one customer before creating a reservation."}
+          </div>
         ) : null}
         {error ? <div className="banner-error">{error}</div> : null}
       </div>

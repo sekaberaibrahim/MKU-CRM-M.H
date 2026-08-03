@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { ReservationSource, ReservationStatus } from "@prisma/client";
+import { ReservationSource, ReservationStatus, RoomStatus } from "@prisma/client";
 import { z } from "zod";
 import { prisma } from "../lib/prisma.js";
 import { asyncHandler } from "../lib/asyncHandler.js";
@@ -42,6 +42,37 @@ reservationsRouter.post(
     const data = parsed.data;
     if (new Date(data.checkOutDate) <= new Date(data.checkInDate)) {
       return res.status(400).json({ error: "Check-out date must be after check-in date" });
+    }
+
+    const room = await prisma.room.findUnique({ where: { id: data.roomId } });
+    if (!room) {
+      return res.status(404).json({ error: "Room not found" });
+    }
+
+    if (room.status !== RoomStatus.AVAILABLE) {
+      return res.status(409).json({ error: "Selected room is not available for booking" });
+    }
+
+    const hasAnyAvailableRoom = await prisma.room.findFirst({
+      where: { status: RoomStatus.AVAILABLE }
+    });
+    if (!hasAnyAvailableRoom) {
+      return res.status(409).json({ error: "No rooms are available to book right now" });
+    }
+
+    const overlappingReservation = await prisma.reservation.findFirst({
+      where: {
+        roomId: data.roomId,
+        status: { not: ReservationStatus.CANCELLED },
+        AND: [
+          { checkInDate: { lt: new Date(data.checkOutDate) } },
+          { checkOutDate: { gt: new Date(data.checkInDate) } }
+        ]
+      }
+    });
+
+    if (overlappingReservation) {
+      return res.status(409).json({ error: "Selected room is already reserved for the chosen dates" });
     }
 
     const reservation = await prisma.reservation.create({

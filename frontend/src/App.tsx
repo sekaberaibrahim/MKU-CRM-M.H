@@ -3,9 +3,10 @@ import { AuthProvider } from "./auth/AuthContext";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { RoleRoute } from "./components/RoleRoute";
 import { Layout } from "./components/Layout";
-import { ADMIN_ONLY, FRONT_DESK, MARKETING_TEAM } from "./rbac";
+import { ADMIN_ONLY, FRONT_DESK, MANAGEMENT, MARKETING_TEAM } from "./rbac";
 import { LoginPage } from "./pages/LoginPage";
 import { DashboardPage } from "./pages/DashboardPage";
+import { ReportsPage } from "./pages/ReportsPage";
 import { CustomersPage } from "./pages/CustomersPage";
 import { RoomsPage } from "./pages/RoomsPage";
 import { ReservationsPage } from "./pages/ReservationsPage";
@@ -25,6 +26,10 @@ export function App() {
           <Route element={<Layout />}>
             <Route path="/" element={<DashboardPage />} />
             <Route path="/customers" element={<CustomersPage />} />
+
+            <Route element={<RoleRoute roles={MANAGEMENT} />}>
+              <Route path="/reports" element={<ReportsPage />} />
+            </Route>
 
             <Route element={<RoleRoute roles={FRONT_DESK} />}>
               <Route path="/rooms" element={<RoomsPage />} />

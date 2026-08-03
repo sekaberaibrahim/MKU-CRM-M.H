@@ -662,6 +662,126 @@ tbody tr:hover {
   text-align: center;
 }
 
+.page-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.reports-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.report-panels {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1rem;
+}
+
+.report-panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 1rem;
+}
+
+.report-panel h3 {
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+}
+
+.report-panel ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.report-panel li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-alt);
+  padding: 0.45rem 0.6rem;
+  font-size: 0.9rem;
+}
+
+.chart-meter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.9rem;
+}
+
+.chart-meter__track {
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--color-surface-alt);
+  overflow: hidden;
+}
+
+.chart-meter__fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--color-gold), var(--color-success));
+}
+
+.chart-meter__labels {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.88rem;
+}
+
+.trend-chart {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.65rem;
+  align-items: end;
+  min-height: 180px;
+}
+
+.trend-chart__column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.trend-chart__bar-wrapper {
+  width: 100%;
+  height: 120px;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  padding: 0 0.15rem;
+}
+
+.trend-chart__bar {
+  width: 100%;
+  min-height: 6px;
+  border-radius: 999px 999px 4px 4px;
+  background: linear-gradient(180deg, var(--color-gold-soft), var(--color-gold));
+}
+
+.trend-chart__column span {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+.trend-chart__column strong {
+  font-size: 0.82rem;
+}
+
 .actions-row {
   display: flex;
   gap: 0.5rem;

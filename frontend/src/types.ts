@@ -131,3 +131,24 @@ export type DashboardKpis = {
   complaintsOpen: number;
   revenueCollected: number;
 };
+
+export type DashboardReport = {
+  generatedAt: string;
+  summary: {
+    totalCustomers: number;
+    totalRooms: number;
+    occupancyRate: number;
+    activeReservations: number;
+    openComplaints: number;
+    revenueCollected: number;
+  };
+  guestSatisfaction: {
+    satisfactionRate: number;
+    resolvedComplaints: number;
+    openComplaints: number;
+  };
+  bookingTrends: Array<{ month: string; count: number }>;
+  roomStatus: Array<{ status: string; count: number }>;
+  reservationStatus: Array<{ status: string; count: number }>;
+  complaintSeverity: Array<{ severity: string; count: number }>;
+};
